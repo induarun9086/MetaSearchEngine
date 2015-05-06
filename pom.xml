@@ -19,6 +19,13 @@
 			<artifactId>spring-data-jpa</artifactId>
 			<version>1.8.0.RELEASE</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.1</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -38,9 +45,9 @@
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.4</version>
-				 <configuration> 
-        		  <webXml>./war/WEB-INF/web.xml</webXml> 
-        		</configuration> 
+				<configuration>
+					<webXml>src/main/webapp/web.xml</webXml>
+				</configuration>
 			</plugin>
 
 		</plugins>
