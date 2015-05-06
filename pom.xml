@@ -26,29 +26,6 @@
 		<finalName>MetaSearchEngine</finalName>
 
 		<plugins>
-<<<<<<< HEAD
-=======
-
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>1.7</version>
-				<executions>
-					<execution>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>add-source</goal>
-						</goals>
-						<configuration>
-							<sources>
-								<source>src</source>
-							</sources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
->>>>>>> efe8ba642c14873758053d14508f2b65171e7a2a
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
@@ -66,21 +43,6 @@
         		</configuration> 
 			</plugin>
 
-<<<<<<< HEAD
-=======
-			<plugin>
-				<groupId>org.apache.tomcat.maven</groupId>
-				<artifactId>tomcat7-maven-plugin</artifactId>
-				<version>2.2</version>
-				<configuration>
-					<url>http://localhost:8080/manager/text</url>
-					<server>TomcatServer</server>
-					<path>/search</path>
-					<username>admin</username>
-					<password>admin</password>
-				</configuration>
-			</plugin>
->>>>>>> efe8ba642c14873758053d14508f2b65171e7a2a
 		</plugins>
 
 	</build>
