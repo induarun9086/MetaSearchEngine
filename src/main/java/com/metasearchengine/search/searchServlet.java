@@ -11,13 +11,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.bson.Document;
-import com.mongodb.Block;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.FindIterable;
 
 import static com.mongodb.client.model.Filters.*;
+
+import com.metasearchengine.aggregator.SearchResultsAggregator;
 
 public class searchServlet extends HttpServlet
 {
@@ -35,14 +36,26 @@ public class searchServlet extends HttpServlet
 		
 		Iterator<Document> it = iterable.iterator();
 		
-		String resp = "{\"results\":[";
+		String resp = "";
 		
 		if(it.hasNext())
 		{
 			resp = resp + it.next().getString("data");
 		}
-		
-		resp = resp + "]}";
+		else
+		{
+			SearchResultsAggregator.collectData((String)request.getParameter("query"));
+			
+			/* Run query */
+			FindIterable<Document> iterable1 = db.getCollection("filteredList").find(eq("name", (String)request.getParameter("query")));
+			
+			Iterator<Document> it1 = iterable1.iterator();
+			
+			if(it1.hasNext())
+			{
+				resp = resp + it1.next().getString("data");
+			}
+		}
 		
 		response.getWriter().write(resp);
 	}

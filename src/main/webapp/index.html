@@ -7,11 +7,14 @@
 		var app = angular.module('myApp', []);
 		app.controller('searchCtrl', function($scope, $http) {
 		  $scope.httpObj = $http;
+		  $scope.loading = 1;
 		  $scope.search = function() {
+			  $scope.loading = 0;
 		      $scope.results = null;
 			  $scope.httpObj.get("http://localhost:8080/MetaSearchEngine/search?query=" + $scope.searchToken)
 			  .success(function (response) {  
 				$scope.results = response.results;
+				$scope.loading = 1;
 			  });
 			};
 		$scope.dosearch = function($event) {
@@ -39,18 +42,23 @@
 	  <input class="searchBar" type="text" ng-model="searchToken" ng-keypress="dosearch($event)" placeholder="Enter a company name..." />
 	  <input class="submitBtn" type="submit" value="Search" ng-click="search()" />
 	  <br /><br /><br /><br />
-	  <div class="resultsView" ng-hide="results.length">
-		<br /> No results found <br /><br />
+	  <div class="loadingView" ng-hide="loading">
+		<br /> Results loading... <br /><br />
 	  </div>
-      <div class="resultsView" ng-repeat="r in results">
-	    <a href=" {{ r.link }} " target="_blank"> 
-			<br />
-			<div class="resultTitle"> {{ r.title  }} </div>
-			<div class="resultLink"> {{ r.link }} </div>
-			<div class="resultDesc"> {{ r.desc }} </div>
-			<br />
-		</a>
-      </div>
+	  <div class="resultView" ng-show="loading">
+		  <div class="resultsView" ng-hide="results.length">
+			<br /> No results found <br /><br />
+		  </div>
+		  <div class="resultsView" ng-repeat="r in results">
+			<a href=" {{ r.url }} " target="_blank"> 
+				<br />
+				<div class="resultTitle"> {{ r.title  }} </div>
+				<div class="resultLink"> {{ r.url }} </div>
+				<div class="resultDesc"> {{ r.desc }} </div>
+				<br />
+			</a>
+		  </div>
+		</div>
     </div>
 </body>
 </html>
