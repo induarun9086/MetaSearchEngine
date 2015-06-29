@@ -10,5 +10,15 @@
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
 	
-	</web-app>
+	<servlet-mapping>
+		<servlet-name>searchServlet</servlet-name>
+		<url-pattern>/search</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>searchServlet</servlet-name>
+		<servlet-class>com.metasearchengine.search.searchServlet</servlet-class>
+	</servlet>
+	
+</web-app>
 	
