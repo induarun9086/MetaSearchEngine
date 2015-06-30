@@ -35,6 +35,8 @@ import com.mongodb.DBCollection;
 
 public class SearchResultsAggregator
 {
+	
+	private static final String[] ontologyTerms =  new String[] {"company","stock quote","product","finance","market","corporation","business"};
 	public static void collectData(String query) {
 		AzureSearchWebQuery aq = new AzureSearchWebQuery();
 		aq.setAppid("TEGsX/02tQYrLLKq8UOXK7RQF7NXs5WzOxqgxAPFfoY");
@@ -72,13 +74,13 @@ public class SearchResultsAggregator
 	private static void filterAndAddToDB(String query, List<AzureSearchWebResult> resList, List<Document> document)
 			throws IOException {
 		// Let's fetch some results from MSN first
-		final Controller controller = ControllerFactory.createSimple();
-		final Map<String, Object> attributes = Maps.newHashMap();
-		CommonAttributesDescriptor.attributeBuilder(attributes)
-				.documents(new ArrayList<Document>(document)).query(query);
+		//final Controller controller = ControllerFactory.createSimple();
+		//final Map<String, Object> attributes = Maps.newHashMap();
+		//CommonAttributesDescriptor.attributeBuilder(attributes)
+				//.documents(new ArrayList<Document>(document)).query(query);
 
-		final ProcessingResult result = controller.process(attributes,
-				LingoClusteringAlgorithm.class);
+		//final ProcessingResult result = controller.process(attributes,
+				//LingoClusteringAlgorithm.class);
 				
 		Iterator<AzureSearchWebResult> it = resList.iterator();
 
@@ -88,10 +90,31 @@ public class SearchResultsAggregator
 		while(it.hasNext()) {
 			AzureSearchWebResult resultItr = (AzureSearchWebResult)it.next();
 			ObjectNode resultObject = mapper.createObjectNode();
-			resultObject.put("title",resultItr.getTitle());
-			resultObject.put("url",resultItr.getUrl());
-			resultObject.put("desc",resultItr.getDescription());
-			resultArray.add(resultObject);
+			String title = resultItr.getTitle();
+			String url = resultItr.getUrl();
+			String description = resultItr.getDescription();
+			for( int i = 0; i < ontologyTerms.length - 1; i++)
+			{
+				boolean matchfound = false;
+				String term = ontologyTerms[i];
+				if(title.contains(term)|| description.contains(term))
+				{
+					matchfound = true;
+				}
+				
+				if(matchfound)
+				{
+					resultObject.put("title",title);
+					resultObject.put("url",url);
+					resultObject.put("desc",description);
+					
+					resultArray.add(resultObject);
+					
+					break;
+				}
+			}
+			
+			
 			
 		}
 		rootNode.put("results",resultArray);
